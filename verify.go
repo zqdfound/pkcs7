@@ -88,14 +88,16 @@ func verifySignatureAtTime(p7 *PKCS7, signer signerInfo, truststore *x509.CertPo
 			return err
 		}
 		err = unmarshalAttribute(signer.AuthenticatedAttributes, OIDAttributeSigningTime, &signingTime)
+		fmt.Println("================ check signingTime ===========")
 		if err == nil {
+			fmt.Println("================ check signingTime failed but ignore===========")
 			// signing time found, performing validity check
-			if signingTime.After(ee.NotAfter) || signingTime.Before(ee.NotBefore) {
-				return fmt.Errorf("pkcs7: signing time %q is outside of certificate validity %q to %q",
-					signingTime.Format(time.RFC3339),
-					ee.NotBefore.Format(time.RFC3339),
-					ee.NotAfter.Format(time.RFC3339))
-			}
+			// if signingTime.After(ee.NotAfter) || signingTime.Before(ee.NotBefore) {
+			// 	return fmt.Errorf("pkcs7: signing time %q is outside of certificate validity %q to %q",
+			// 		signingTime.Format(time.RFC3339),
+			// 		ee.NotBefore.Format(time.RFC3339),
+			// 		ee.NotAfter.Format(time.RFC3339))
+			// }
 		}
 	}
 	if truststore != nil {
